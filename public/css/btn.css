@@ -1,0 +1,73 @@
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff');
+}
+
+.btn {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 25px 60px;
+  display: inline-block;
+  margin: 15px 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  border-radius: 50px;
+  border: 3px solid #eef5db;
+  color: #eef5db;
+  overflow: hidden;
+}
+
+.btn:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn:before {
+	font-family: 'icomoon';
+	-webkit-font-smoothing: antialiased;
+	position: absolute;
+	height: 100%;
+	font-size: 125%;
+	line-height: 2.54;
+	color: #eef5db;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	left: 130%;
+	top: 0;
+}
+
+.icon-arrow-right:before {
+  font-family: FontAwesome;
+	content: "\f0f5";
+}
+
+.btn:active {
+  color: #78E38E;
+}
+
+.btn:hover {
+	background: linear-gradient(155deg, #DD4E44, #FE5F55);
+  border: 3px solid #89E69C;
+  transition: 1s;
+}
+
+.btn:active:before {
+	color: #4CD964;
+}
+
+.btn:hover:before {
+	left: 80%;
+}
