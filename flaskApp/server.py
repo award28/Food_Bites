@@ -2,9 +2,14 @@ from flask import Flask
 from flask import request 
 from flask import jsonify 
 from bs4 import BeautifulSoup
+from flask_cors import CORS, cross_origin
 import requests
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+CORS(app)
 
 @app.route("/")
 def hello():
@@ -19,18 +24,21 @@ def getRecipes():
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
     correctLinks = []
+    titles = []
+    images = []
 
     for link in soup.find_all('a'):
-        if userSearch in link.get('href'):
+        if userSearch in link.get('href') and (link.get('href') not in correctLinks):
             correctLinks.append(link.get('href'))
-            # print(link.get('href'))
+            if link.find('img'):
+                titles.append(link.find('img')['alt'])
+                images.append(link.find('img')['src'])
 
-        retVal = {}
-        i = 0
-        for link in correctLinks:
-            retVal[i] = link
-            i = i + 1
-    print('retrieved ' + str(i) + ' results')
+    retVal = {  'recipes': correctLinks,
+                'titles': titles,
+                'images': images
+            }
+    print('retrieved ' + str(len(correctLinks)) + ' results')
     return jsonify(retVal)
                     
 if __name__ == "__main__":
