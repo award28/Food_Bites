@@ -5,7 +5,7 @@
 
 .btn {
   font-family: inherit;
-  font-size: inherit;
+  font-size: 130%;
   background: none;
   cursor: pointer;
   padding: 25px 60px;
@@ -35,12 +35,11 @@
 }
 
 .btn:before {
-	font-family: 'icomoon';
 	-webkit-font-smoothing: antialiased;
 	position: absolute;
 	height: 100%;
 	font-size: 125%;
-	line-height: 2.54;
+	line-height: 3.2;
 	color: #eef5db;
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
@@ -54,6 +53,15 @@
 	content: "\f0f5";
 }
 
+.btn:focus {
+  outline: none;
+  color: #eef5db;
+}
+.btn:active:focus {
+  color: #78E38E;
+  outline: none;
+}
+
 .btn:active {
   color: #78E38E;
 }
@@ -62,6 +70,7 @@
 	background: linear-gradient(155deg, #DD4E44, #FE5F55);
   border: 3px solid #89E69C;
   transition: 1s;
+  color: #eef5db;
 }
 
 .btn:active:before {

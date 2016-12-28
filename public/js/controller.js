@@ -8,5 +8,12 @@ app.controller('index', ['$scope', '$http', '$window', '$document', function($sc
         else 
             $scope.searchBg={}
     });
-}]);
 
+    $scope.getRecipes = function() {
+        $http.get('http://localhost:3020?recipe=' + $scope.search).success(function(response) {
+            $window.alert(response);
+        }).error( function(error, status) {
+            $window.alert("error");
+        });
+    }
+}]);
