@@ -2,15 +2,25 @@
 <html ng-app=myApp>
   <head>
     <title></title>
-    <link rel='stylesheet' href='/css/style.css' />
+		<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
   </head>
-  <body ng-controller=notes>
-    <h1></h1>
-    <p>Welcome to 1clickShoppingCart</p>
+  <body class=bg ng-controller=index>
+			<section class="content">
+        <center>
+				<h2>Welcome to Food Bites!</h2>
+				<span class="search">
+					<input class="searchInput" type="text" ng-model=search ng-style=searchBg />
+					<label class="searchLabel">
+						<span class="searchContent">Search Recipes</span>
+					</label>
+				</span>
+        </center>
+			</section>
   </body>
 
   <!--Angular import -->
   <script   src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script   src="/js/controller.js"></script>
+	</html>
 
-</html>
