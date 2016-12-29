@@ -120,21 +120,24 @@ color: #FFCC00;
         </div>
         <div class="modal-body">
           <h2 ng-if="!list.length">You have nothing in your shopping list!</h2>
-          <pre ng-repeat="recipe in list">
-            {{ recipe | json }}
-          </pre>
+          <div ng-repeat="recipe in list">
+            <h4>{{recipe.title}}</h4>
+            <h5 ng-repeat="ing in recipe.ingredients">
+            {{ing}}
+            </h5>
+          </div>
         </div>
         <div class="modal-footer">
           <div class=row>
-            <div class="col-md-2">
+           <!-- <div class="col-md-2">
               <div class="icon-wrap icon-effect">
                 <a href="#" class="icon icon-google">Google Keep</a>
               </div>
-            </div>
-            <div class=col-md-6>
+           </div>-->
+            <div class="col-md-offset-3 col-md-5">
                 <button class="sbtn icon-trash" data-dismiss="modal" ng-click=clearList()>Clear list</button> 
             </div>
-            <div class=col-md-4>
+            <div class=col-md-3>
                 <button class="sbtn icon-close" data-dismiss="modal">Dismiss</button> 
             </div>
           </div>

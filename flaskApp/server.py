@@ -35,6 +35,25 @@ def getRecipes():
 
     print('retrieved ' + str(len(correctLinks)) + ' results')
     return jsonify(recipes)
+
+@app.route('/getIngredients')
+def getIngredients():
+    link = request.args.get('url')
+    BASE_URL = 'https://www.budgetbytes.com'
+    RECIPE_URL = link
+    print(BASE_URL + RECIPE_URL)
+
+    ingR = requests.get(BASE_URL + RECIPE_URL)
+    ingData = ingR.text
+    ingSoup = BeautifulSoup(ingData, 'lxml')
+    ingredients = []
+
+    for ul in ingSoup.find_all('ul'):
+        for li in ul.find_all('li', class_='ingredient'):
+            if li.string:
+                li.string = li.string[:-5]
+                ingredients.append(li.string)
+    return jsonify(ingredients)
                     
 if __name__ == "__main__":
     app.run()

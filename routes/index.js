@@ -18,4 +18,14 @@ router.get('/getRecipes', function(req, res, next) {
     });
 });
 
+router.get('/getIngredients', function(req, res, next) {
+    console.log(req.query.url);
+   request.get('http://localhost:5000/getIngredients?url=' + req.query.url, function(err, response, body){
+        if (err) {
+            res.send("Error: " + err);
+        }
+    res.send(body);
+    });
+});
+
 module.exports = router;

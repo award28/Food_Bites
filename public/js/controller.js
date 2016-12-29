@@ -60,21 +60,43 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     $scope.alert = "";
 
     $scope.addToList = function(recipe) {
+        var url = recipe.link.substring(27, recipe.link.length);
         var recipes = [];
         var onList = false;
         $scope.alert = "";
+        
+        $http.get('/getIngredients?url=' + url).success( function(response) {
+            recipe.ingredients = response;
 
-        if(JSON.parse($window.localStorage.getItem("list"))){
-            var storageRecipes = JSON.parse($window.localStorage.getItem("list"));
-            for(var i = 0; i < storageRecipes.length; i++)
-            recipes.push(storageRecipes[i]);
-        }
-        if(storageRecipes != undefined) {
-            for(var i = 0; i < storageRecipes.length; i++) {
-                if(storageRecipes[i].title === recipe.title)
-                    onList = true;
+            if(JSON.parse($window.localStorage.getItem("list"))){
+                var storageRecipes = JSON.parse($window.localStorage.getItem("list"));
+                for(var i = 0; i < storageRecipes.length; i++)
+                recipes.push(storageRecipes[i]);
             }
-            if(!onList) {
+            if(storageRecipes != undefined) {
+                for(var i = 0; i < storageRecipes.length; i++) {
+                    if(storageRecipes[i].title === recipe.title)
+                        onList = true;
+                }
+                if(!onList) {
+                    recipes.push(recipe);
+                    $scope.alert = "Ingredients added to shopping list!";
+                    $scope.alertClass = 'success';
+                    $timeout(function() {
+                        $scope.alertClass = '';
+                        $scope.alert = "";
+                    }, 4000);
+                }
+                else {
+                    $scope.alert = "Bruh you can't add the same recipe twice -_-";
+                    $scope.alertClass = 'danger';
+                    $timeout(function() {
+                        $scope.alertClass = '';
+                        $scope.alert = "";
+                    }, 4000);
+                }
+            }
+            else {
                 recipes.push(recipe);
                 $scope.alert = "Ingredients added to shopping list!";
                 $scope.alertClass = 'success';
@@ -83,30 +105,16 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                     $scope.alert = "";
                 }, 4000);
             }
-            else {
-                $scope.alert = "Bruh you can't add the same recipe twice -_-";
-                $scope.alertClass = 'danger';
-                $timeout(function() {
-                    $scope.alertClass = '';
-                    $scope.alert = "";
-                }, 4000);
-            }
-        }
-        else {
-            recipes.push(recipe);
-            $scope.alert = "Ingredients added to shopping list!";
-            $scope.alertClass = 'success';
-            $timeout(function() {
-                $scope.alertClass = '';
-                $scope.alert = "";
-            }, 4000);
-        }
 
-        $window.localStorage.setItem("list", JSON.stringify(recipes));
+            $window.localStorage.setItem("list", JSON.stringify(recipes));
+        });
     }
 
     $scope.clearList = function() {
-        $window.localStorage.clear(); 
+        if($scope.list) {
+            if($window.confirm("Are you sure you want to clear your shopping list?"))
+                $window.localStorage.clear(); 
+        }
     }
 
     $scope.getList = function() {
