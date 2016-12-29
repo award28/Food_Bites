@@ -1,11 +1,16 @@
 var express = require('express');
 var request = require('request');
+var fs = require('fs');
 
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+    fs.appendFile('ipAddress.txt', "Date: " + Date() + ", ip: " + req.connection.remoteAddress + "\n\n", function (err) {
+
+    });
+
+res.render('index');
 });
 
 router.get('/getRecipes', function(req, res, next) {
