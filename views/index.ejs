@@ -23,7 +23,7 @@ color: #FFCC00;
 }
 
 .thumbnail {
-  height: 500px;
+  height: 525px;
   background: #FE7C73;
   border: 1px solid #FE7C73;
 }
@@ -43,7 +43,7 @@ color: #FFCC00;
     <div class=container>
       <center>
         <br><br>
-        <h2>Welcome to Food Bites!</h2>
+        <h1>Welcome to Food Bites!</h1>
         <h3 class="{{alertClass}}">
           <div  ng-if="alert">{{alert}}</div>
           <div  ng-if="!alert && !loading"> &nbsp;</div>
@@ -76,9 +76,20 @@ color: #FFCC00;
         <button class="lbtn icon-list" data-toggle=modal data-target=#list ng-click="getList()">View My List</button> 
       </center>
       <center>
+        <h2 ng-if="recipes.length || loading">
+          {{ message }} 
+        </h2>
         <h2 ng-if="!recipes.length && !loading">
           {{ message }} 
         </h2>
+      </center>
+      <center ng-if="!recipes.length && !loading">
+        <h2>
+        So what is food bites?
+        </h2>
+        <h5>
+        About food bites goes here
+        </h5>
       </center>
       <div class=row>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" ng-repeat="recipe in recipes" ng-if="recipe.image">
@@ -116,15 +127,49 @@ color: #FFCC00;
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h3 class="modal-title" id="listLabel">Shopping List</h3>
+          <h2 class="modal-title" id="listLabel">Shopping List</h2>
         </div>
         <div class="modal-body">
-          <h2 ng-if="!list.length">You have nothing in your shopping list!</h2>
+          <h3 ng-if="!list.length">You have nothing in your shopping list!</h3>
           <div ng-repeat="recipe in list">
-            <h4>{{recipe.title}}</h4>
+            <div class=row>
+              <div class="col-xs-8 cols-m-8 col-md-9 col-lg-9 ">
+                <h3>
+                  <strike ng-if=recipe.hasStrike>{{recipe.title}}</strike>
+                  <div ng-if=!recipe.hasStrike>{{recipe.title}}</div>
+                </h3>
+              </div>
+              <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1 ">
+                <br>
+                <br class=visible-xs>
+                  <a href=# class="btn btn-danger" ng-click=deleteRecipe($index)>
+                    <b class="icon-close"></b>
+                  </a>
+              </div>
+              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
+                <br>
+                <br class=visible-xs>
+                  <a href=# class="btn btn-warning" ng-click=mainStrike($index)>
+                    <b class="icon-plus" ng-if="recipe.childHasStrike[$index]"></b>
+                    <b class="icon-minus" ng-if="!recipe.childHasStrike[$index]"></b>
+                  </a>
+              </div>
+            </div>
             <h5 ng-repeat="ing in recipe.ingredients">
-            {{ing}}
+              <div class=row>
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 ">
+                  <strike ng-if="recipe.childHasStrike[$index]">{{ing}}</strike>
+                  <div ng-if="!recipe.childHasStrike[$index]">{{ing}}</div>
+                </div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
+                  <a href=# class="btn btn-warning" ng-click="childStrike($parent.$index, $index)">
+                    <b class="icon-plus" ng-if="recipe.childHasStrike[$index]"></b>
+                    <b class="icon-minus" ng-if="!recipe.childHasStrike[$index]"></b>
+                  </a>
+                </div>
+              </div>
             </h5>
+            <br>
           </div>
         </div>
         <div class="modal-footer">

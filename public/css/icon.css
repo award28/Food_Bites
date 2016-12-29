@@ -18,6 +18,16 @@ a:active {
   text-decoration: none;
 }
 
+.icon-minus:before {
+  font-family: FontAwesome;
+	content: "\f147";
+}
+
+.icon-plus:before {
+  font-family: FontAwesome;
+	content: "\f196";
+}
+
 .icon-google:before {
   font-family: FontAwesome;
 	content: "\f1a0";
