@@ -18,6 +18,21 @@ a:active {
   text-decoration: none;
 }
 
+.icon-google:before {
+  font-family: FontAwesome;
+	content: "\f1a0";
+}
+
+.icon-close:before {
+  font-family: FontAwesome;
+	content: "\f00d";
+}
+
+.icon-list:before {
+  font-family: FontAwesome;
+	content: "\f0ca";
+}
+
 .icon-plus:before {
   font-family: FontAwesome;
 	content: "\f055";

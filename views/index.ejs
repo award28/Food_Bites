@@ -14,10 +14,28 @@
     <link rel="stylesheet" type="text/css" href="/css/btn.css" />
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 <style>
+.success {
+color: #46D964;
+}
+
+.danger {
+color: #FFCC00;
+}
+
 .thumbnail {
   height: 500px;
   background: #FE7C73;
   border: 1px solid #FE7C73;
+}
+.modal-content {
+  background-color: #FE5F55;
+  border: 1px solid #FE5F55;
+}
+.modal-header {
+  border-bottom: 1px solid #E63462;
+}
+.modal-footer {
+  border-top: 1px solid #E63462;
 }
 </style>
   </head>
@@ -26,9 +44,14 @@
       <center>
         <br><br>
         <h2>Welcome to Food Bites!</h2>
+        <h3 class="{{alertClass}}">
+          <div  ng-if="alert">{{alert}}</div>
+          <div  ng-if="!alert && !loading"> &nbsp;</div>
+          <img src='/img/loading.gif' ng-if="loading">
+        </h3>
       </center>
       <div class=row>
-        <div class="col-md-offset-1 col-md-4">
+        <div class="col-md-4">
           <center>
             <span class="search">
               <input class="searchInput" type="text" ng-model=search ng-style=searchBg ng-keydown="($event.which === 13 || $event.which === 9) && getRecipes()"/>
@@ -38,30 +61,36 @@
             </span>
           </center>
         </div>
-        <div class=col-md-3>
+        <div class=col-md-4>
           <center>
             <button class="lbtn icon-arrow-right" id=search ng-click="getRecipes()">Search</button> 
           </center>
         </div>
-        <div class=col-md-3>
+        <div class=col-md-4>
           <center>
             <button class="lbtn icon-trash" ng-click="clearSearch()">Clear</button> 
           </center>
         </div>
       </div>
       <center>
-      <h2 ng-if="!recipes.length && !loading">
-        {{ message }} 
-      </h2>
-        <img src='/img/loading.gif' ng-if="loading">
+        <button class="lbtn icon-list" data-toggle=modal data-target=#list ng-click="getList()">View My List</button> 
+      </center>
+      <center>
+        <h2 ng-if="!recipes.length && !loading">
+          {{ message }} 
+        </h2>
       </center>
       <div class=row>
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="recipe in recipes" ng-if="recipe.image">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" ng-repeat="recipe in recipes" ng-if="recipe.image">
           <div class="thumbnail animated fadeInUp" style="-webkit-animation-delay: {{($index*1.5)/10}}s;" ng-model=thumbHeight>
-            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+            <a href="{{recipe.link }}">
+              <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+            </a>
             <div class="caption">
               <center>
-              <h4>{{ recipe.title }}</h4>
+                <a href="{{recipe.link }}">
+                  <h4>{{ recipe.title }}</h4>
+                </a>
               </center>
               <div class=row>
                 <div class=col-md-12>
@@ -71,16 +100,49 @@
                 </div>
                 <div class=col-md-12>
                   <div class="icon-wrap icon-effect">
-                    <a href="#" class="icon icon-plus" ng-click="addToList()">Test</a>
+                    <a href="#" class="click icon icon-plus" ng-click="addToList(recipe)">Test</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-    </div>
+      </div>
+      </div>
   </body>
   
+  <div class="modal fade" id="list" tabindex="-1" role="dialog" aria-labelledby="listLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h3 class="modal-title" id="listLabel">Shopping List</h3>
+        </div>
+        <div class="modal-body">
+          <h2 ng-if="!list.length">You have nothing in your shopping list!</h2>
+          <pre ng-repeat="recipe in list">
+            {{ recipe | json }}
+          </pre>
+        </div>
+        <div class="modal-footer">
+          <div class=row>
+            <div class="col-md-2">
+              <div class="icon-wrap icon-effect">
+                <a href="#" class="icon icon-google">Google Keep</a>
+              </div>
+            </div>
+            <div class=col-md-6>
+                <button class="sbtn icon-trash" data-dismiss="modal" ng-click=clearList()>Clear list</button> 
+            </div>
+            <div class=col-md-4>
+                <button class="sbtn icon-close" data-dismiss="modal">Dismiss</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
   <!-- jQuery -->
   <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
 

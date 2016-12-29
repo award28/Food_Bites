@@ -32,7 +32,7 @@ h1, h2, h3, h4, h5, h6 {
 	display: block;
 	float: right;
 	padding: 0.8em;
-	border: none;
+	border: 3px solid #EEF5DB;
 	border-radius: 0;
 	font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	width: 100%;
