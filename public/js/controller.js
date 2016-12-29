@@ -9,16 +9,48 @@ app.controller('index', ['$scope', '$http', '$window', '$document', function($sc
             $scope.searchBg={}
     });
 
-    $scope.all = {}; 
+    $scope.recipes = {}; 
+    $scope.loading = false;
+    $scope.message = "You Haven't searched for anything yet!";
+
+    $scope.clearSearch = function() {
+        if($scope.recipes.length) {
+            $scope.recipes = {}; 
+            $scope.message = "Search cleared! Look up more delicious food ;)";
+        }
+        else 
+            $scope.message = "You can't clear nothing -_-";
+    }
 
     $scope.getRecipes = function() {
-        $http.get('http://localhost:5000/getRecipes?recipe=' + $scope.search).success(function(response) {
-            $scope.all.recipes = response.recipes;
-            $scope.all.titles = response.titles;
-            $scope.all.images = response.images;
+        if($scope.search) {
+            $scope.recipes = {};
+            $scope.loading = true;
+            $http.get('/getRecipes?recipe=' + $scope.search.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s/g, '+')).success(function(response) {
+                if(!response.length) {
+                    $scope.message = "We couldn't find anything :(";
+                }
+                else {
+                    $scope.recipes = response;
+                    console.log(response);
+                }
         }).error( function(error, status) {
-            $window.alert(status);
-            $window.alert("error");
+            $scope.recipes = {};
+            $scope.message = "Error: We couldn't find anything :(";
+        }).finally( function() {
+            $scope.loading = false;
         });
+        }
+        else {
+            $scope.recipes = {};
+            $scope.message = "You can't search for nothing -_-";
+        }
+    }
+
+    $scope.recipeLink = function(link) {
+        $window.location.href = link;
+    }
+    $scope.addToList = function() {
+        $window.alert("Added ingredients to shopping list!");
     }
 }]);

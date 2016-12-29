@@ -11,10 +11,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 CORS(app)
 
-@app.route("/")
-def hello():
-    return "Hello World!"
-
 @app.route("/getRecipes")
 def getRecipes():
     userSearch = request.args.get('recipe')
@@ -23,23 +19,22 @@ def getRecipes():
     r = requests.get(BASE_URL + SEARCH_URL + userSearch)
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
+    recipes = []
     correctLinks = []
-    titles = []
-    images = []
+    recipe = {}
 
     for link in soup.find_all('a'):
         if userSearch in link.get('href') and (link.get('href') not in correctLinks):
-            correctLinks.append(link.get('href'))
             if link.find('img'):
-                titles.append(link.find('img')['alt'])
-                images.append(link.find('img')['src'])
+                recipe['link'] = link.get('href')
+                recipe['title'] = link.find('img')['alt']
+                recipe['image'] = link.find('img')['src']
+                recipes.append(recipe)
+                correctLinks.append(link.get('href'))
+                recipe = {}
 
-    retVal = {  'recipes': correctLinks,
-                'titles': titles,
-                'images': images
-            }
     print('retrieved ' + str(len(correctLinks)) + ' results')
-    return jsonify(retVal)
+    return jsonify(recipes)
                     
 if __name__ == "__main__":
     app.run()

@@ -1,9 +1,21 @@
 var express = require('express');
+var request = require('request');
+
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
+});
+
+router.get('/getRecipes', function(req, res, next) {
+    console.log(req.query.recipe);
+   request.get('http://localhost:5000/getRecipes?recipe=' + req.query.recipe, function(err, response, body){
+        if (err) {
+            res.send("Error: " + err);
+        }
+    res.send(body);
+    });
 });
 
 module.exports = router;
