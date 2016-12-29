@@ -10,10 +10,16 @@
     <!-- animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" crossorigin="anonymous">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/css/btn.css" />
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 <style>
+.thin {
+  font-weight: 300;
+}
 .success {
 color: #46D964;
 }
@@ -75,22 +81,45 @@ color: #FFCC00;
       <center>
         <button class="lbtn icon-list" data-toggle=modal data-target=#list ng-click="getList()">View My List</button> 
       </center>
-      <center>
-        <h2 ng-if="recipes.length || loading">
-          {{ message }} 
-        </h2>
-        <h2 ng-if="!recipes.length && !loading">
-          {{ message }} 
-        </h2>
-      </center>
-      <center ng-if="!recipes.length && !loading">
-        <h2>
-        So what is food bites?
-        </h2>
-        <h5>
-        About food bites goes here
-        </h5>
-      </center>
+      <section ng-if="!recipes.length && !loading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">
+                      So what is Food Bites?
+                    </h2>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-5x fa-cutlery icon-color sr-icons"></i>
+                        <h3>Convience</h3>
+                        <h4 class=thin>After searching for a recipe on Food Bites and finding one that you like, you just click the '+' underneath the recipe and it's automatically added to your shopping list. This shoppping list features a simple striking method to mark off ingredients while shopping, so you don't lose track of what you have.</h4>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-5x fa-usd icon-color sr-icons"></i>
+                        <h3>Priceless</h3>
+                        <h4 class=thin>We wanted Food Bites to be easy on your wallet, so we've utilized popular  websites that list recipe ingredients with the ingredients cost.  </h4>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-5x fa-mobile icon-color sr-icons"></i>
+                        <h3>Mobile Friendly</h3>
+                        <h4 class=thin>Since your shopping list needs to travel with you, we felt a mobile experience that was as pleasurable as the online site was essential to the design of Food Bites. Thus, we've made all of the features easily accessible through the web on any mobile phone.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
       <div class=row>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" ng-repeat="recipe in recipes" ng-if="recipe.image">
           <div class="thumbnail animated fadeInUp" style="-webkit-animation-delay: {{($index*1.5)/10}}s;" ng-model=thumbHeight>
@@ -150,8 +179,8 @@ color: #FFCC00;
                 <br>
                 <br class=visible-xs>
                   <a href=# class="btn btn-warning" ng-click=mainStrike($index)>
-                    <b class="icon-plus" ng-if="recipe.childHasStrike[$index]"></b>
-                    <b class="icon-minus" ng-if="!recipe.childHasStrike[$index]"></b>
+                    <b class="icon-plus" ng-if="recipe.hasStrike"></b>
+                    <b class="icon-minus" ng-if="!recipe.hasStrike"></b>
                   </a>
               </div>
             </div>

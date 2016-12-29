@@ -4,22 +4,23 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     $scope.$watch('search', function(search) {
         if(search != undefined && search != "") 
             $scope.searchBg={"background": "#fe5f55"}
-        
+
         else 
             $scope.searchBg={}
     });
 
     $scope.recipes = {}; 
     $scope.loading = false;
-    $scope.message = "";
+    $scope.alert = "";
 
     $scope.clearSearch = function() {
         if($scope.recipes.length) {
             $scope.recipes = {}; 
-            $scope.message = "Search cleared! Look up more delicious food ;)";
+            $scope.alert = "Search cleared! Look up more delicious food ;)";
+            $timeout(function() {
+                $scope.alert = '';
+            }, 4000);
         }
-        else 
-            $scope.message = "You can't clear nothing -_-";
     }
 
     $scope.getRecipes = function() {
@@ -28,30 +29,46 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
             $scope.loading = true;
             $http.get('/getRecipes?recipe=' + $scope.search.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s/g, '+')).success(function(response) {
                 if(!response.length) {
-                    $scope.message = "We couldn't find anything :(";
+                    $scope.alert = "We couldn't find anything :(";
+                    $timeout(function() {
+                        $scope.alert = '';
+                    }, 4000);
                 }
                 else {
                     $scope.recipes = response;
                     console.log(response);
                 }
-        }).error( function(error, status) {
-            $scope.recipes = {};
-            $scope.message = "Error: We couldn't find anything :(";
-        }).finally( function() {
-            $scope.loading = false;
-                if($scope.recipes.length != undefined) {
-                $scope.alert = $scope.recipes.length + " recipes found!";
-                $scope.alertClass = 'success';
-                $timeout(function() {
-                    $scope.alertClass = '';
-                    $scope.alert = "";
-                }, 4000);
+            }).error( function(error, status) {
+                $scope.recipes = {};
+                $scope.alert = "Error: We couldn't find anything :(";
+            }).finally( function() {
+                $scope.loading = false;
+                if($scope.recipes.length != undefined && $scope.recipes.length != 291) {
+                    $scope.alert = $scope.recipes.length + " recipes found!";
+                    $scope.alertClass = 'success';
+                    $timeout(function() {
+                        $scope.alertClass = '';
+                        $scope.alert = "";
+                    }, 4000);
                 }
-        });
+                else {
+                    $scope.recipes = {};
+                    $scope.alert = "We couldn't find anything :(";
+                    $scope.alertClass = 'danger';
+                    $timeout(function() {
+                        $scope.alertClass = '';
+                        $scope.alert = '';
+                    }, 4000);
+                }
+            });
         }
         else {
             $scope.recipes = {};
-            $scope.message = "You can't search for nothing -_-";
+            $scope.alert = "You can't search for nothing!";
+            $timeout(function() {
+                $scope.alertClass = '';
+                $scope.alert = "";
+            }, 4000);
         }
     }
 
@@ -59,21 +76,19 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
         $window.location.href = link;
     }
 
-    $scope.alert = "";
-
     $scope.addToList = function(recipe) {
         var url = recipe.link.substring(27, recipe.link.length);
         var recipes = [];
         var onList = false;
         $scope.alert = "";
         recipe.hasStrike = false;
-        
+
         $http.get('/getIngredients?url=' + url).success( function(response) {
             $scope.loading = true;
             recipe.ingredients = response;
             recipe.childHasStrike = [];
             for(var i = 0; i < response.length; i++)
-                recipe.childHasStrike[i] = false;
+            recipe.childHasStrike[i] = false;
 
             if(JSON.parse($window.localStorage.getItem("list"))){
                 var storageRecipes = JSON.parse($window.localStorage.getItem("list"));
@@ -95,7 +110,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                     }, 4000);
                 }
                 else {
-                    $scope.alert = "Bruh you can't add the same recipe twice -_-";
+                    $scope.alert = "You can't add the same recipe more than once.";
                     $scope.alertClass = 'danger';
                     $timeout(function() {
                         $scope.alertClass = '';
@@ -115,21 +130,22 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
 
             $window.localStorage.setItem("list", JSON.stringify(recipes));
         }).error( function(error, status) {
+            $scope.loading = false;
             $scope.recipes = {};
-                $scope.alert = "We couldn't get the ingredients :(";
-                $scope.alertClass = 'danger';
-                $timeout(function() {
-                    $scope.alertClass = '';
-                    $scope.alert = "";
-                }, 4000);
+            $scope.alert = "We couldn't get the ingredients :(";
+            $scope.alertClass = 'danger';
+            $timeout(function() {
+                $scope.alertClass = '';
+                $scope.alert = "";
+            }, 4000);
         }).finally( function() {
             $scope.loading = false;
         });
-;
+        ;
     }
 
     $scope.clearList = function() {
-        if(!$scope.list.length) {
+        if($scope.list.length) {
             if($window.confirm("Are you sure you want to clear your shopping list?"))
                 $window.localStorage.clear(); 
         }
@@ -148,12 +164,12 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
         if($scope.list[ind].hasStrike) {
             $scope.list[ind].hasStrike = false;
             for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++)
-               $scope.list[ind].childHasStrike[i] = false;
+            $scope.list[ind].childHasStrike[i] = false;
         }
         else {
             $scope.list[ind].hasStrike = true;
             for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++)
-               $scope.list[ind].childHasStrike[i] = true;
+            $scope.list[ind].childHasStrike[i] = true;
         }
     }
 

@@ -108,6 +108,10 @@ a:active {
 	-webkit-font-smoothing: antialiased;
 }
 
+.icon-color {
+color: #78E38E;
+}
+
 @-webkit-keyframes spinAround {
 	from {
 		-webkit-transform: rotate(0deg)
