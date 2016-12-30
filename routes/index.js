@@ -6,15 +6,12 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    fs.appendFile('ipAddress.txt', "Date: " + Date() + ", ip: " + req.connection.remoteAddress + "\n\n", function (err) {
-
-    });
-
-res.render('index');
+	res.render('index');
 });
 
 router.get('/getRecipes', function(req, res, next) {
     console.log(req.query.recipe);
+    fs.appendFile('searches.txt', "Date: " + Date() + ", search: " + req.query.recipe + "\n", function (err) {});
    request.get('http://localhost:5000/getRecipes?recipe=' + req.query.recipe, function(err, response, body){
         if (err) {
             res.send("Error: " + err);
