@@ -16,6 +16,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     $scope.clearSearch = function() {
         if($scope.recipes.length) {
             $scope.recipes = {}; 
+            $scope.search = ""; 
             $scope.alert = "Search cleared! Look up more delicious food ;)";
             $timeout(function() {
                 $scope.alert = '';
@@ -73,7 +74,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     }
 
     $scope.recipeLink = function(link) {
-        $window.location.href = link;
+        $window.open(link, '_blank');
     }
 
     $scope.addToList = function(recipe) {
