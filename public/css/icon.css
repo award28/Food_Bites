@@ -20,12 +20,12 @@ a:active {
 
 .icon-minus:before {
   font-family: FontAwesome;
-	content: "\f147";
+	content: "\f068";
 }
 
-.icon-plus:before {
+.icon-check:before {
   font-family: FontAwesome;
-	content: "\f196";
+	content: "\f00c";
 }
 
 .icon-google:before {

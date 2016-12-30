@@ -130,12 +130,12 @@ color: #FFCC00;
       <div class=row>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" ng-repeat="recipe in recipes" ng-if="recipe.image">
           <div class="thumbnail animated fadeInUp" style="-webkit-animation-delay: {{($index*1.5)/10}}s;" ng-model=thumbHeight>
-            <a href="{{recipe.link }}">
+            <a href="{{recipe.link }}" target="_blank">
               <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
             </a>
             <div class="caption">
               <center>
-                <a href="{{recipe.link }}">
+                <a href="{{recipe.link }}" target="_blank">
                   <h4>{{ recipe.title }}</h4>
                 </a>
               </center>
@@ -196,7 +196,7 @@ color: #FFCC00;
                 <br>
                 <br class=visible-xs>
                 <a href=# class="btn btn-{{recipe.hasStrikeColor}}" ng-click=mainStrike($index)>
-                    <b class="icon-plus" ng-if="recipe.hasStrike"></b>
+                    <b class="icon-check" ng-if="recipe.hasStrike"></b>
                     <b class="icon-minus" ng-if="!recipe.hasStrike"></b>
                   </a>
               </div>
@@ -209,7 +209,7 @@ color: #FFCC00;
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                   <a href=# class="btn btn-{{recipe.childHasStrikeColor[$index]}}" ng-click="childStrike($parent.$index, $index)">
-                    <b class="icon-plus" ng-if="recipe.childHasStrike[$index]"></b>
+                    <b class="icon-check" ng-if="recipe.childHasStrike[$index]"></b>
                     <b class="icon-minus" ng-if="!recipe.childHasStrike[$index]"></b>
                   </a>
                 </div>
