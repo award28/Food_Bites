@@ -82,13 +82,17 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
         var onList = false;
         $scope.alert = "";
         recipe.hasStrike = false;
+        recipe.hasStrikeColor = "warning";
 
         $http.get('/getIngredients?url=' + url).success( function(response) {
             $scope.loading = true;
             recipe.ingredients = response;
             recipe.childHasStrike = [];
-            for(var i = 0; i < response.length; i++)
+            recipe.childHasStrikeColor = [];
+            for(var i = 0; i < response.length; i++) {
             recipe.childHasStrike[i] = false;
+            recipe.childHasStrikeColor[i] = "warning";
+            }
 
             if(JSON.parse($window.localStorage.getItem("list"))){
                 var storageRecipes = JSON.parse($window.localStorage.getItem("list"));
@@ -163,30 +167,41 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     $scope.mainStrike = function(ind) {
         if($scope.list[ind].hasStrike) {
             $scope.list[ind].hasStrike = false;
-            for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++)
-            $scope.list[ind].childHasStrike[i] = false;
+            $scope.list[ind].hasStrikeColor = "warning";
+            for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++) {
+                $scope.list[ind].childHasStrike[i] = false;
+                $scope.list[ind].childHasStrikeColor[i] = "warning";
+            }
         }
         else {
             $scope.list[ind].hasStrike = true;
-            for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++)
-            $scope.list[ind].childHasStrike[i] = true;
+            $scope.list[ind].hasStrikeColor = "success";
+            for(var i = 0; i < $scope.list[ind].childHasStrike.length; i++) {
+                $scope.list[ind].childHasStrike[i] = true;
+                $scope.list[ind].childHasStrikeColor[i] = "success";
+            }
         }
     }
 
     $scope.childStrike = function(parIndex, ind) {
         if($scope.list[parIndex].childHasStrike[ind]) {
             $scope.list[parIndex].childHasStrike[ind] = false;
+            $scope.list[parIndex].childHasStrikeColor[ind] = "warning";
             $scope.list[parIndex].hasStrike = false;
+            $scope.list[parIndex].hasStrikeColor = "warning";
         }
         else {
             $scope.list[parIndex].childHasStrike[ind] = true;
+            $scope.list[parIndex].childHasStrikeColor[ind] = "success";
             var allStriked = true;
             for(var i = 0; i < $scope.list[parIndex].childHasStrike.length; i++) {
                 if(!$scope.list[parIndex].childHasStrike[i])
                     allStriked = false;
             }
-            if(allStriked)
+            if(allStriked) {
                 $scope.list[parIndex].hasStrike = true;
+                $scope.list[parIndex].hasStrikeColor = "success";
+            }
         }
     }
 

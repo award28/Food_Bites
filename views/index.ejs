@@ -195,7 +195,7 @@ color: #FFCC00;
               <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                 <br>
                 <br class=visible-xs>
-                  <a href=# class="btn btn-warning" ng-click=mainStrike($index)>
+                <a href=# class="btn btn-{{recipe.hasStrikeColor}}" ng-click=mainStrike($index)>
                     <b class="icon-plus" ng-if="recipe.hasStrike"></b>
                     <b class="icon-minus" ng-if="!recipe.hasStrike"></b>
                   </a>
@@ -208,7 +208,7 @@ color: #FFCC00;
                   <div ng-if="!recipe.childHasStrike[$index]">{{ing}}</div>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
-                  <a href=# class="btn btn-warning" ng-click="childStrike($parent.$index, $index)">
+                  <a href=# class="btn btn-{{recipe.childHasStrikeColor[$index]}}" ng-click="childStrike($parent.$index, $index)">
                     <b class="icon-plus" ng-if="recipe.childHasStrike[$index]"></b>
                     <b class="icon-minus" ng-if="!recipe.childHasStrike[$index]"></b>
                   </a>
