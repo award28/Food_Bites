@@ -18,8 +18,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.enable('trust proxy')
-
 app.use('/', index);
 
 // catch 404 and forward to error handler

@@ -3,7 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sudo node ./bin/www"
+    "start": "npm run python | npm run node",
+    "startF": "sudo npm run foreverPython | sudo npm run foreverNode",
+    "python": "python3 ./flaskApp/server.py",
+    "node": "node ./bin/www",
+    "foreverPython": "forever start -c python3 ./flaskApp/server.py",
+    "foreverNode": "forever start ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
