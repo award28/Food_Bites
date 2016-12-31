@@ -17,6 +17,10 @@
     <link rel="stylesheet" type="text/css" href="/css/btn.css" />
     <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 <style>
+.green {
+  color: #67DF80;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -93,7 +97,7 @@ color: #FFCC00;
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">
-                      So what is Food Bites?
+                      So, what is Food Bites?
                     </h2>
                 </div>
             </div>
@@ -106,7 +110,7 @@ color: #FFCC00;
                     <div class="service-box">
                         <i class="fa fa-5x fa-cutlery icon-color sr-icons"></i>
                         <h3>Convenience</h3>
-                        <h4 class=thin>After searching for a recipe on Food Bites and finding one that you like, you just click the '+' underneath the recipe and it's automatically added to your shopping list. This shopping list features a simple striking method to mark off ingredients while shopping, so you don't lose track of what you have.</h4>
+                        <h4 class=thin>After searching for a recipe on Food Bites and finding one that you like, you click the 'Add To List' on the recipe of your choice and it's automatically added to your shopping list. The shopping list features a simple striking method to mark off ingredients while shopping, so you don't lose track of what you have.</h4>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 text-center">
@@ -205,7 +209,7 @@ color: #FFCC00;
               <div class=row>
                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 ">
                   <strike ng-if="recipe.childHasStrike[$index]">{{ing}}</strike>
-                  <div ng-if="!recipe.childHasStrike[$index]">{{ing}}</div>
+                  <span ng-if="!recipe.childHasStrike[$index]">{{ing}}</span>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                   <a href=# class="btn btn-{{recipe.childHasStrikeColor[$index]}}" ng-click="childStrike($parent.$index, $index)">
