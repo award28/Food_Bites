@@ -38,6 +38,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                 }
                 else {
                     $scope.recipes = response;
+                    console.log(response)
                 }
             }).error( function(error, status) {
                 $scope.recipes = {};
