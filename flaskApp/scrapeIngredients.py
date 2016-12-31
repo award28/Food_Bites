@@ -8,14 +8,12 @@ if __name__ == '__main__':
     data = r.text
     soup = BeautifulSoup(data, 'lxml')
     ingredients = []
+    ingPricing = []
 
     for ul in soup.find_all('ul'):
         for li in ul.find_all('li', class_='ingredient'):
-            li.string = li.string[:-5]
-            ingredients.append(li.string)
-
-    for ing in ingredients:
-        print(ing)
+            ingPricing.append(li.string[-5:])
+            ingredients.append(li.string[:-5])
 
     totalPrice = soup.find_all('span', attrs={'itemprop': 'recipeCategory'})
     pricePerServing = soup.find_all('span', attrs={'itemprop': 'recipeCuisine'})
