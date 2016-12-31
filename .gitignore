@@ -2,7 +2,7 @@
 logs
 *.log
 npm-debug.log*
-ipAddress.txt 
+searches.txt 
 
 # Runtime data
 pids
