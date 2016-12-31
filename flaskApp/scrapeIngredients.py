@@ -19,11 +19,7 @@ if __name__ == '__main__':
     pricePerServing = soup.find_all('span', attrs={'itemprop': 'recipeCuisine'})
     totalServings = soup.find_all('span', attrs={'itemprop': 'recipeYield'})
 
-    for span in totalPrice:
-        print('Total Cost = ' + span.string)
+    print(totalPrice[0].string)
+    print(pricePerServing[0].string)
+    print(totalServings[0].string)
 
-    for span in pricePerServing:
-        print('Price Per Serving = ' + span.string)
-
-    for span in totalServings:
-        print('Total Servings = ' + span.string)

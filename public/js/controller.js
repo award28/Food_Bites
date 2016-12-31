@@ -29,6 +29,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
             $scope.recipes = {};
             $scope.loading = true;
             $http.get('/getRecipes?recipe=' + $scope.search.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s/g, '+')).success(function(response) {
+                console.log(response);
                 if(!response.length) {
                     $scope.alert = "We couldn't find anything :(";
                     $timeout(function() {
@@ -37,7 +38,6 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                 }
                 else {
                     $scope.recipes = response;
-                    console.log(response);
                 }
             }).error( function(error, status) {
                 $scope.recipes = {};
@@ -88,6 +88,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
         $http.get('/getIngredients?url=' + url).success( function(response) {
             $scope.loading = true;
             recipe.ingredients = response;
+
             recipe.childHasStrike = [];
             recipe.childHasStrikeColor = [];
             for(var i = 0; i < response.length; i++) {
@@ -159,7 +160,6 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
     $scope.deleteRecipe = function(ind) {
         if($window.confirm("Are you sure you want to delete this item from your shopping list?")){
             $scope.list.splice(ind, 1);
-            console.log($scope.list);
             $window.localStorage.setItem("list", JSON.stringify($scope.list));
         }
     }

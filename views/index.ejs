@@ -142,6 +142,12 @@ color: #FFCC00;
                 <a href="{{recipe.link }}" target="_blank">
                   <h4>{{ recipe.title }}</h4>
                 </a>
+                <h5>
+                  Price per Serving: {{recipe.pricePerServing}}
+                  <br>
+                  Total Price: {{recipe.totalPrice}}
+                  <br>
+                  Number of Servings: {{recipe.totalServings}}
               </center>
               <div class=row>
                 <div class=col-md-12>
@@ -208,8 +214,11 @@ color: #FFCC00;
             <h5 ng-repeat="ing in recipe.ingredients">
               <div class=row>
                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 ">
-                  <strike ng-if="recipe.childHasStrike[$index]">{{ing}}</strike>
-                  <span ng-if="!recipe.childHasStrike[$index]">{{ing}}</span>
+                  <span class=green>
+                    {{ing.price}} &emsp;
+                  </span>
+                  <strike ng-if="recipe.childHasStrike[$index]">{{ing.ingredient}}</strike>
+                  <span ng-if="!recipe.childHasStrike[$index]">{{ing.ingredient}}</span>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                   <a href=# class="btn btn-{{recipe.childHasStrikeColor[$index]}}" ng-click="childStrike($parent.$index, $index)">
