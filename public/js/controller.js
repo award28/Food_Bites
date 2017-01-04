@@ -28,7 +28,7 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
         if($scope.search) {
             $scope.recipes = {};
             $scope.loading = true;
-            $http.get('/getRecipes?recipe=' + $scope.search.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s/g, '+')).success(function(response) {
+            $http.get('/getArRecipes?recipe=' + $scope.search.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/\s/g, '+')).success(function(response) {
                 console.log(response);
                 if(!response.length) {
                     $scope.alert = "We couldn't find anything :(";
@@ -38,14 +38,13 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                 }
                 else {
                     $scope.recipes = response;
-                    console.log(response)
                 }
             }).error( function(error, status) {
                 $scope.recipes = {};
                 $scope.alert = "Error: We couldn't find anything :(";
             }).finally( function() {
                 $scope.loading = false;
-                if($scope.recipes.length != undefined && $scope.recipes.length != 291) {
+                if($scope.recipes.length != 291) {
                     $scope.alert = $scope.recipes.length + " recipes found!";
                     $scope.alertClass = 'success';
                     $timeout(function() {
@@ -72,6 +71,10 @@ app.controller('index', ['$scope', '$http', '$window', '$document', '$timeout', 
                 $scope.alert = "";
             }, 4000);
         }
+    }
+
+    function getRecipes() {
+
     }
 
     $scope.recipeLink = function(link) {

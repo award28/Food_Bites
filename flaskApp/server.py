@@ -11,7 +11,42 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 CORS(app)
 
-@app.route("/getRecipes")
+@app.route("/getArRecipes")
+def getAllRecipes():
+    userSearch = request.args.get('recipe')
+    BASE_URL = 'http://allrecipes.com/'
+    SEARCH_URL = '/?wt='
+    r = requests.get(BASE_URL + 'search/results/' + SEARCH_URL + userSearch.replace(' ', '%20'))
+    print(userSearch.replace(' ', '%20'))
+    data = r.text
+    soup = BeautifulSoup(data, 'lxml')
+    recipes = []
+    correctLinks = []
+    recipe = {}
+    userSearch = userSearch.split(' ', 1)
+
+    for article in soup.find_all('article'):
+        for link in article.find_all('a'):
+            for search in userSearch:
+                if (link.get('href') and link.get('data-internal-referrer-link') != 'videocard') and (search.rstrip('s').rstrip('ie') in link.get('href') and (link.get('href') not in correctLinks)):
+                    if link.find('img'):
+                        splitTitle = link.find('img')['title'].split(' ')
+                        print(splitTitle)
+                        if(splitTitle[len(splitTitle) - 1] == 'Video'):
+                            recipe['title'] = link.find('img')['title'][:-17]
+                        else:
+                            recipe['title'] = link.find('img')['title'][:-7]
+                            
+                        recipe['link'] = BASE_URL + link.get('href')
+                        recipe['image'] = link.find('img')['data-original-src']
+                        correctLinks.append(link.get('href'))
+                        recipes.append(recipe)
+                        recipe = {}
+
+    print('retrieved ' + str(len(correctLinks)) + ' results')
+    return jsonify(recipes)
+
+@app.route("/getBbRecipes")
 def getRecipes():
     userSearch = request.args.get('recipe')
     BASE_URL = 'https://www.budgetbytes.com'
@@ -32,23 +67,9 @@ def getRecipes():
                         recipe['title'] = link.find('img')['alt']
                         recipe['image'] = link.find('img')['src']
                         correctLinks.append(link.get('href'))
-
-        if(len(correctLinks) and article.find_all('a')[0].get('href') == correctLinks[len(correctLinks) - 1]):
-            for cost in article.find_all('div', attrs={'class': 'recipe-cost'}):
-                totalPrice = float("".join(str(x) for x in cost.string.split('/', 1)[0][1:]).split(' ', 1)[0])
-                recipe['totalPrice'] = totalPrice 
-
-                if(len(cost.string.split('/', 1)) > 1 and cost.string.split('/', 1)[1][1] == '$'):
-                    pricePerServing = float("".join(str(x) for x in(cost.string.split('/', 1)[1][2:]).split(' ', 1)[0]))
-                    recipe['pricePerServing'] = pricePerServing 
-                    recipe['totalServings'] = int(round(totalPrice/pricePerServing, 0))
-                recipes.append(recipe)
-        recipe = {}
-
-    totalPrice = soup.find_all('div', attrs={'class': 'recipe-cost'})
-    pricePerServing = soup.find_all('span', attrs={'itemprop': 'recipeCuisine'})
-    totalServings = soup.find_all('span', attrs={'itemprop': 'recipeYield'})
-
+                        recipes.append(recipe)
+                        recipe = {}
+                  
     print('retrieved ' + str(len(correctLinks)) + ' results')
     return jsonify(recipes)
 
